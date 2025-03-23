@@ -2,80 +2,71 @@ import os
 import logging
 from logging.handlers import RotatingFileHandler
 
-settings = {
-    '_id': 1,  # don't change this line only, if you do you're dying by my hand
-    "SPOILER": True,  # bool write True or False
-    "FILE_AUTO_DELETE": 3600,  # in seconds
-    "AUTO_DEL": True,  # bool write True or False
-    "STICKER_ID": "CAACAgUAAyEFAASAgUwqAAJh_mckw2STkeY1WMOHJGY4Hs9_1-2fAAIPFAACYLShVon-N6AFLnIiHgQ",
-    "stk_del_timer": 1, # in seconds
-    "bot_admin": [2093552866] #e.g. 1963929292,38739292827 differetiate admins with a comma
-}
 
-HELP_MSG = """■ 𝗛𝗲𝗹𝗹𝗼, 𝗔𝗱𝗺𝗶𝗻𝘀!\n\n<blockquote expandable><b>ɴᴇᴇᴅ ʜᴇʟᴘ? ɪᴛ’s sɪᴍᴘʟᴇ: ᴊᴜsᴛ ᴋɴᴏᴄᴋ ᴏɴ <i>Sᴀɪ’s</i> ᴅᴏᴏʀ (ᴛʜᴀᴛ’s ᴍᴇ, ʙʏ ᴛʜᴇ ᴡᴀʏ). 🙋‍♂️ ᴡʜᴀᴛᴇᴠᴇʀ ɪᴛ ɪs—ǫᴜᴇsᴛɪᴏɴs, ᴄᴏɴᴄᴇʀɴs, ᴇxɪsᴛᴇɴᴛɪᴀʟ ᴄʀɪsᴇs ʀᴇʟᴀᴛᴇᴅ ᴛᴏ ᴛʜɪs ʙᴏᴛ—ᴊᴜsᴛ ᴀsᴋ.</b></blockquote>\n\n<blockquote expandable><b>ᴡʜʏ ɪs ᴛʜɪs ᴍᴇssᴀɢᴇ sᴏ sʜᴏʀᴛ? ʙᴇᴄᴀᴜsᴇ ᴛʜɪs ʙᴏᴛ ʜᴀs ᴀʟʀᴇᴀᴅʏ ᴄᴏɴsᴜᴍᴇᴅ ᴀ ʀɪᴅɪᴄᴜʟᴏᴜs ᴀᴍᴏᴜɴᴛ ᴏғ ᴍʏ ᴛɪᴍᴇ, ᴀɴᴅ ɪ’ᴍ ɴᴏᴛ ɪɴ ᴛʜᴇ ᴍᴏᴏᴅ ᴛᴏ ᴡʀɪᴛᴇ ᴀ ɴᴏᴠᴇʟ ʜᴇʀᴇ. 🤷‍♂️ sᴏ, ʏᴇᴀʜ, ʀᴇᴀᴄʜ ᴏᴜᴛ, ᴀɴᴅ ɪ’ʟʟ sᴏʀᴛ ɪᴛ ᴏᴜᴛ.</b></blockquote>\n\n<blockquote><b>ɴᴏᴡ ɢᴏ ɢᴇɴᴇʀᴀᴛᴇ ᴛʜᴏsᴇ ʟɪɴᴋs ʟɪᴋᴇ ᴛʜᴇ ʀᴏᴄᴋsᴛᴀʀ ᴀᴅᴍɪɴ ʏᴏᴜ ᴀʀᴇ! 💪</b></blockquote>
-"""  # shown only to admins
-
-# Bot token @Botfather
-TG_BOT_TOKEN = '5800464701:AAEcqurMoiZRO3vOGmgdvkqJg4NBOl3b0mQ'
-# Your API ID from my.telegram.org
-APP_ID = int(os.environ.get("APP_ID", "26684254"))
-
-# Your API Hash from my.telegram.org
-API_HASH = os.environ.get("API_HASH", "fc836096a68be3a4fcd7594cb3d9326f")
-
-# Your db channel Id
-DB_CHANNEL_ID = int(os.environ.get("CHANNEL_ID", "-1002456061680"))
-
-# NAME OF OWNER
-OWNER = os.environ.get("OWNER", "Rai Yan")
-
-# OWNER ID
-OWNER_ID = 6161189904
-
-# SUDO: those who can edit admins in channel
-SUDO = [6161189904]
-if OWNER_ID not in SUDO:
-    SUDO.append(OWNER_ID)
-
-# Port
-PORT = os.environ.get("PORT", "8108")
-
-# Database
-DB_URI = os.environ.get("DATABASE_URL", "mongodb+srv://sainallamilli:Filestore1@cluster0.8urcp.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
-DB_NAME = os.environ.get("DATABASE_NAME", "Cluster0")
-
-# FSUBS configuration
-FSUBS = [
-    {'_id': -1002349345920, "CHANNEL_NAME": "Animes2u"},
-]
+def get_int_env(var_name, default):
+    try:
+        return int(os.environ.get(var_name, default))
+    except ValueError:
+        return default  # Fallback to default if conversion fails
 
 
-TG_BOT_WORKERS = int(os.environ.get("TG_BOT_WORKERS", "4"))
+def str_to_bool(value):
+    return str(value).lower() in ("true", "1", "yes")
 
-# Start message
-START_MSG = os.environ.get("START_MESSAGE", "<blockquote><b>ʜᴇʏ ᴛʜᴇʀᴇ, {mention} ✌🏻</b></blockquote>\n\n<blockquote expandable><b>I'ᴍ ᴍɪᴛsᴜʜᴀ ᴍɪʏᴀᴍɪᴢᴜ, ᴀ ʏᴏᴜʀ ᴘᴇʀsᴏɴᴀʟ ғɪʟᴇ sᴛᴏʀᴇ ʙᴏᴛ. 📂 I sᴛᴏʀᴇ ᴘʀɪᴠᴀᴛᴇ ғɪʟᴇs ɪɴ ᴀ sᴘᴇᴄɪғɪᴇᴅ ᴄʜᴀɴɴᴇʟ, ᴀɴᴅ ᴏᴛʜᴇʀs ᴄᴀɴ ᴀᴄᴄᴇss ᴛʜᴇᴍ ᴛʜʀᴏᴜɢʜ ᴀ sᴘᴇᴄɪᴀʟ ʟɪɴᴋ. 🖇️ Lɪᴋᴇ ᴍʏ ᴏᴡɴ ᴏʀɢᴀɴɪᴢᴇᴅ ʟɪғᴇ, ɪ'ᴍ ʜᴇʀᴇ ᴛᴏ ᴋᴇᴇᴘ ʏᴏᴜʀ ғɪʟᴇs ɪɴ ᴏʀᴅᴇʀ! ❤️‍🩹</b></blockquote>")
-ADMINS = [6161189904]
-# Add other admin IDs here as needed, ensuring not to include OWNER_ID
-other_admin_ids = [5376373647]  # Replace with actual admin IDs
-for admin_id in other_admin_ids:
-    if admin_id != OWNER_ID:
-        ADMINS.append(admin_id)
 
-# Ensure OWNER_ID is not duplicated
-if OWNER_ID not in ADMINS:
-    ADMINS.append(OWNER_ID)
+BOT_TOKEN = os.environ.get("BOT_TOKEN", "5800464701:AAEcqurMoiZRO3vOGmgdvkqJg4NBOl3b0mQ")
+API_ID = get_int_env("API_ID", 7515868)
+API_HASH = os.environ.get("API_HASH", "dbd251e9ad4883b0443cc82b618ac6fa")
 
-# Set your Custom Caption here, Keep None for Disable Custom Caption
-CUSTOM_CAPTION = '<blockquote expandable><b>{previouscaption}</b></blockquote>'
+OWNER_ID = get_int_env("OWNER_ID", 6081617163)
+DB_URL = os.environ.get("DB_URL", "mongodb+srv://bestanimeandcartoonsclips:VrMTuRFUEZdKsoV7@cluster0.ayqz3o3.mongodb.net/?retryWrites=true&w=majority")
+DB_NAME = os.environ.get("DB_NAME", "aryabro")
 
-# Set True if you want to prevent users from forwarding files from the bot
-PROTECT_CONTENT = True if os.environ.get('PROTECT_CONTENT', "False") == "True" else False
+CHANNEL_ID = get_int_env("CHANNEL_ID", -1002292066966)
+FORCE_SUB_CHANNEL = get_int_env("FORCE_SUB_CHANNEL", -1001713521586)
+FORCE_SUB_CHANNEL2 = get_int_env("FORCE_SUB_CHANNEL2", -1002129412433)
+FORCE_SUB_CHANNEL3 = get_int_env("FORCE_SUB_CHANNEL3", -1001946212779)  # Added back
+FORCE_SUB_CHANNEL4 = get_int_env("FORCE_SUB_CHANNEL4", -1002229481059)  # Added back
 
-# Set true if you want to disable your Channel Posts Share button
-DISABLE_CHANNEL_BUTTON = True  # True or None
+FILE_AUTO_DELETE = get_int_env("FILE_AUTO_DELETE", 86400)  # Auto delete in seconds
+PORT = os.environ.get("PORT", "8080")
+TG_BOT_WORKERS = get_int_env("TG_BOT_WORKERS", 6)
 
-BOT_STATS_TEXT = "<blockquote><b>BOT UPTIME</b>\n{uptime}</blockquote>"
-USER_REPLY_TEXT = "ʙᴀᴋᴋᴀ ! ʏᴏᴜ ᴀʀᴇ ɴᴏᴛ ᴍʏ ꜱᴇɴᴘᴀɪ!!"
+START_PIC = os.environ.get("START_PIC", "https://telegra.ph/file/703f6dd8194cb5d707d63-c4bfc450283f9a4b4b.jpg")
+FORCE_PIC = os.environ.get("FORCE_PIC", "https://telegra.ph/file/703f6dd8194cb5d707d63-c4bfc450283f9a4b4b.jpg")
+
+# Proper handling of admins
+ADMINS = {6081617163}  # Use a set to avoid duplicates
+env_admins = os.environ.get("ADMINS", "6081617163").split()
+ADMINS.update(int(x) for x in env_admins if x.isdigit())  # Ensuring only valid numbers
+ADMINS.add(OWNER_ID)  # Ensuring OWNER_ID is in ADMINS
+ADMINS = list(ADMINS)  # Convert back to list for compatibility
+
+CUSTOM_CAPTION = os.environ.get("CUSTOM_CAPTION", None)
+
+PROTECT_CONTENT = str_to_bool(os.environ.get('PROTECT_CONTENT', "False"))
+DISABLE_CHANNEL_BUTTON = str_to_bool(os.environ.get('DISABLE_CHANNEL_BUTTON', "True"))
+
+BOT_STATS_TEXT = "<b>BOT UPTIME :</b>\n{uptime}"
+
+USER_REPLY_TEXT = "âŒsá´Ê€Ê€Ê à°®à°¾à°µà°¾ à°¨à±à°µà±à°µà± à°¨à°¾ á´á´¡É´á´‡Ê€ à°•à°¾à°¦à±..!ðŸ˜œ\n\nâŒDon't Send Me Messages Directly I'm Only File Share Bot !"
+
+START_MSG = """<blockquote>
+<b>Hey, <a href='tg://user?id={id}'>{first}</a>âœŒðŸ». I hope you're feeling the power of ð’Êœá´€á´…á´á´¡ Má´É´á´€Ê€á´„Êœ ðŸ˜ˆ.</b>
+
+<b>I'm The Ultimate File Sharing Bot, built to rule the Shadow Realm ðŸ–¤</b>
+
+ðŸ”± <b>Store & Share Files with a Single Click.</b>  
+ðŸ›¡ï¸ <b>Infinite File Management System.</b>  
+ðŸ“‚ <b>Post Files in Anime Monarch ðŸ‘‘ Template.</b>
+
+---
+
+<b>Now, The File Realm Is Under My Control ðŸ˜ˆ.</b>  
+<b>Are You Ready to Dominate, {first}-Sama? ðŸ‘‘</b>
+</blockquote>"""
+
+FORCE_MSG = "Join my channels first ðŸ˜ˆ"
 
 LOG_FILE_NAME = "filesharingbot.txt"
 
@@ -84,15 +75,12 @@ logging.basicConfig(
     format="[%(asctime)s - %(levelname)s] - %(name)s - %(message)s",
     datefmt='%d-%b-%y %H:%M:%S',
     handlers=[
-        RotatingFileHandler(
-            LOG_FILE_NAME,
-            maxBytes=50000000,
-            backupCount=10
-        ),
+        RotatingFileHandler(LOG_FILE_NAME, maxBytes=50000000, backupCount=10),
         logging.StreamHandler()
     ]
 )
 logging.getLogger("pyrogram").setLevel(logging.WARNING)
+
 
 def LOGGER(name: str) -> logging.Logger:
     return logging.getLogger(name)
