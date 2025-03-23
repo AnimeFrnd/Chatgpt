@@ -1,0 +1,11 @@
+{
+  "name": "File Store Bot Yugen",
+  "description": "file sharing bot store posts and it can access by special links",
+  "keywords": [
+    "telegram",
+    "file",
+    "sharing"
+  ],
+  "repository": "https://github.com/voatxm/Noir1Fstore",
+  "logo": "https://envs.sh/18R.jpg"
+}
